@@ -1,9 +1,9 @@
-# Eshme-Commerce URLs
+# Esme-Commerce URLs
 
-- Source repository: https://github.com/calina-miguel/eshme-commerce
+- Source repository: https://github.com/calina-miguel/eshme-commerce (repository rename pending)
 - Local development: http://127.0.0.1:5173/
-- Public app: https://eshme-commerce.netlify.app/
+- Current legacy public app: https://eshme-commerce.netlify.app/
 - Sign in: https://eshme-commerce.netlify.app/login
 - Workspace: https://eshme-commerce.netlify.app/workspace
 
-This is the permanent public hostname for future releases. Update the existing deployment and verify the public home page and workspace route before sharing changes.
+The brand is Esme-Commerce. The current provider-assigned hostname and source repository still use the earlier spelling; migrate hosting and rename the repository before presenting new canonical URLs.

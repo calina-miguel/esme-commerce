@@ -1,4 +1,4 @@
-/* Eshme's luminous commerce interface: dark mineral surfaces, mint signal, restrained light. */
+/* Esme's luminous commerce interface: dark mineral surfaces, mint signal, restrained light. */
 :root{color-scheme:dark;--ink:#eaf2f1;--muted:#9aaead;--cream:#071317;--line:#244149;--green:#5de0c1;--lime:#abf5df;--surface:#0d2026;--surface-raised:#102a31;--glow:#55e1c133}
 body{background:radial-gradient(ellipse at 74% 9%,#12373a 0,transparent 34rem),var(--cream);color:var(--ink)}
 .site-header{position:relative;z-index:5}.site-header nav{color:#b7c9c8}.site-header nav a:hover,.button-link:hover{color:#78f1d1}

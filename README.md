@@ -1,6 +1,6 @@
-# Eshme-Commerce
+# Esme-Commerce
 
-Eshme-Commerce helps aspiring sellers organize the work of launching and operating an online store. It combines sourced niche research, supplier term comparison, product records, channel planning, campaigns, leads, conversations, orders, and subscriber consent in one workspace.
+Esme-Commerce helps aspiring sellers organize the work of launching and operating an online store. It combines sourced niche research, supplier term comparison, product records, channel planning, campaigns, leads, conversations, orders, and subscriber consent in one workspace.
 
 The public site explains the service and its current pricing. Signed-in records are stored per account with Netlify Identity and Netlify Blobs. Store and social integrations are shown as manual workflows until their platform credentials and approvals are configured. Payment processing is inactive; the Payments area records transactions manually.
 

@@ -6,7 +6,7 @@ import "./futuristic-theme.css";
 import AuthCallback from "./auth-callback";
 
 export const metadata: Metadata = {
-  title: "Eshme-Commerce",
+  title: "Esme-Commerce",
   description: "A seller workspace for research, sourcing and commerce operations.",
   icons: {
     icon: "/favicon.svg",

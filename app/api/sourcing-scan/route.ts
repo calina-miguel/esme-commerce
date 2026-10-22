@@ -53,7 +53,7 @@ export async function GET(request: Request) {
   const url = new URL("https://html.duckduckgo.com/html/");
   url.searchParams.set("q", query);
   try {
-    const response = await fetch(url, { headers: { "User-Agent": "EshmeCommerceResearch/1.0" }, signal: AbortSignal.timeout(9000), cache: "no-store" });
+    const response = await fetch(url, { headers: { "User-Agent": "EsmeCommerceResearch/1.0" }, signal: AbortSignal.timeout(9000), cache: "no-store" });
     if (!response.ok) throw new Error("Search provider unavailable");
     const html = (await response.text()).slice(0, 300_000);
     return Response.json({ query, checkedAt: new Date().toISOString(), results: parseResults(html), note: "Search previews only. Consignment, costs, minimums and returns are not verified." }, { headers: { "Cache-Control": "no-store" } });
