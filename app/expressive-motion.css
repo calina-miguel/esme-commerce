@@ -66,3 +66,28 @@
   .marketing [data-scroll-motion]{opacity:1!important;transform:none!important;will-change:auto!important}
   .feature-section:before,.feature-progress{display:none}
 }
+
+/* Native scrolling with a lightweight reveal and decorative parallax layer. */
+html{scroll-behavior:auto}
+@media (prefers-reduced-motion:no-preference){
+  .marketing.scroll-motion-ready .reveal{
+    opacity:0;
+    transform:translate3d(0,28px,0);
+    transition:opacity 850ms ease,transform 850ms ease;
+    animation:none;
+  }
+  .marketing.scroll-motion-ready .reveal.is-visible{
+    opacity:1;
+    transform:translate3d(0,0,0);
+  }
+  .marketing .hero-visual::before{
+    content:"";
+    position:absolute;
+    inset:10% 5%;
+    border-radius:50%;
+    background:repeating-radial-gradient(circle at 50% 50%,transparent 0 18px,#64e7c511 19px 20px);
+    transform:translate3d(0,var(--parallax-y,0px),0);
+    will-change:transform;
+    pointer-events:none;
+  }
+}

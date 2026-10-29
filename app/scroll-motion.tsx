@@ -12,6 +12,20 @@ export default function ScrollMotion() {
     const root = document.querySelector<HTMLElement>(".marketing");
     if (!root) return;
     const items = Array.from(root.querySelectorAll<HTMLElement>("[data-scroll-motion]"));
+    const reveals = Array.from(root.querySelectorAll<HTMLElement>(".hero-copy h1, .section-intro h2, .feature-sticky h2, .pricing-section h2, .faq h2"));
+    const heroVisual = root.querySelector<HTMLElement>(".hero-visual");
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      }
+    }, { threshold: 0.12 });
+    for (const heading of reveals) {
+      heading.classList.add("reveal");
+      observer.observe(heading);
+    }
     let frame = 0;
 
     const update = () => {
@@ -43,6 +57,11 @@ export default function ScrollMotion() {
         const total = Math.max(1, bounds.height - height);
         feature.style.setProperty("--section-progress", `${clamp(-bounds.top / total)}`);
       }
+      if (heroVisual) {
+        const hero = heroVisual.closest("section");
+        const distance = hero ? -hero.getBoundingClientRect().top : 0;
+        heroVisual.style.setProperty("--parallax-y", `${distance * 0.18}px`);
+      }
     };
 
     const schedule = () => {
@@ -56,6 +75,10 @@ export default function ScrollMotion() {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       if (frame) window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      for (const heading of reveals) {
+        heading.classList.remove("reveal", "is-visible");
+      }
       root.classList.remove("scroll-motion-ready");
       document.documentElement.classList.remove("motion-opt-in");
     };
