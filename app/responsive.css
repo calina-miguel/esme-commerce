@@ -1,0 +1,425 @@
+/* Shared layout guardrails and responsive adjustments for the public site and seller workspace. */
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+}
+
+body {
+  overflow-x: clip;
+}
+
+img,
+video,
+svg,
+canvas {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+.marketing,
+.app-shell,
+.workspace-scene,
+.workspace-content {
+  min-width: 0;
+}
+
+@media (min-width: 651px) and (max-width: 900px) {
+  .site-header {
+    flex-wrap: wrap;
+    padding-inline: 5vw !important;
+  }
+
+  .site-header nav {
+    gap: clamp(12px, 2.2vw, 24px) !important;
+    padding-inline: clamp(14px, 2.5vw, 24px) !important;
+  }
+
+  .hero {
+    gap: 30px;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 7vw, 62px) !important;
+  }
+
+  .pricing-section {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
+    gap: 32px;
+  }
+
+  .app-sidebar {
+    width: 206px;
+    padding-inline: 12px;
+  }
+
+  .workspace-top {
+    padding-inline: 20px;
+  }
+
+  .workspace-content {
+    padding-inline: 22px;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 14px 10px;
+    padding: 16px 5vw !important;
+  }
+
+  .site-header > .brand {
+    min-width: 0;
+    font-size: clamp(15px, 4vw, 19px) !important;
+  }
+
+  .site-header nav {
+    display: flex !important;
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px clamp(14px, 5vw, 28px) !important;
+    width: 100%;
+    padding: 10px 14px !important;
+    white-space: normal;
+  }
+
+  .site-header nav a {
+    font-size: 12px !important;
+  }
+
+  .header-actions {
+    gap: 8px !important;
+  }
+
+  .header-actions .button-small {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px;
+    padding: clamp(28px, 8vw, 48px) 5vw 42px !important;
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 10vw, 58px) !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-copy > p {
+    font-size: clamp(15px, 4vw, 18px) !important;
+  }
+
+  .hero-actions {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .hero-actions > * {
+    max-width: 100%;
+  }
+
+  .hero-visual {
+    width: 100%;
+    min-width: 0;
+    min-height: 350px !important;
+  }
+
+  .visual-panel {
+    width: min(100%, 430px);
+    min-height: 340px !important;
+  }
+
+  .panel-body {
+    padding: clamp(20px, 6vw, 30px) !important;
+  }
+
+  .panel-body h2 {
+    font-size: clamp(30px, 8vw, 40px) !important;
+  }
+
+  .float-card {
+    right: 0;
+    bottom: 0;
+    max-width: calc(100% - 16px);
+  }
+
+  .value-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 18px;
+    padding: 18px 5vw;
+    line-height: 1.45;
+  }
+
+  .section-wrap {
+    padding: clamp(48px, 11vw, 72px) 5vw;
+  }
+
+  .section-intro h2,
+  .feature-sticky h2,
+  .pricing-section h2,
+  .faq h2 {
+    font-size: clamp(30px, 8vw, 44px);
+    overflow-wrap: anywhere;
+  }
+
+  .step-grid,
+  .overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .step-card,
+  .overview-card {
+    min-width: 0;
+    padding: clamp(16px, 4vw, 24px);
+  }
+
+  .feature-layout,
+  .pricing-section {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 28px !important;
+  }
+
+  .feature-layout > div:first-child {
+    position: static !important;
+  }
+
+  .pricing-card {
+    width: 100%;
+    padding: clamp(22px, 6vw, 35px);
+  }
+
+  .faq details,
+  .faq summary {
+    overflow-wrap: anywhere;
+  }
+
+  .footer-inner {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 18px;
+    padding-block: 36px;
+  }
+
+  .footer-inner > * {
+    max-width: 100%;
+  }
+
+  .app-shell {
+    display: block;
+    min-height: 100dvh;
+  }
+
+  .app-sidebar {
+    position: fixed;
+    z-index: 30;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: auto;
+    padding: 0;
+    background: transparent !important;
+  }
+
+  .workspace-nav-toggle {
+    display: grid !important;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin-left: auto;
+  }
+
+  .workspace-nav-panel {
+    position: absolute;
+    right: 0;
+    bottom: 66px;
+    display: flex;
+    width: min(320px, calc(100vw - 32px));
+    max-height: calc(100dvh - 100px);
+    overflow-y: auto;
+    padding: 20px 14px;
+  }
+
+  .workspace-nav-panel:not(.open) {
+    display: none;
+  }
+
+  .app-sidebar .workspace-nav-panel nav {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .app-sidebar .workspace-nav-panel .side-caption,
+  .app-sidebar .workspace-nav-panel .sidebar-foot {
+    display: block;
+  }
+
+  .workspace-top {
+    height: auto;
+    min-height: 76px;
+    flex-wrap: wrap;
+    padding: 12px 16px !important;
+  }
+
+  .workspace-top > .eyebrow {
+    width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .workspace-top-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .workspace-top-actions label {
+    min-width: 0;
+  }
+
+  .workspace-top select {
+    max-width: min(48vw, 190px);
+  }
+
+  .workspace-content {
+    width: 100%;
+    padding: 28px 16px 100px !important;
+  }
+
+  .page-heading h1 {
+    font-size: clamp(32px, 9vw, 48px);
+    overflow-wrap: anywhere;
+  }
+
+  .toolbar > input {
+    min-width: min(100%, 220px);
+    flex-basis: 100%;
+  }
+
+  .toolbar > button,
+  .toolbar > label {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .record-card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .row-actions {
+    flex-wrap: wrap;
+  }
+
+  .modal-backdrop {
+    place-items: center;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  }
+
+  .modal {
+    width: 100%;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    padding: clamp(18px, 5vw, 26px);
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header > .brand {
+    gap: 7px !important;
+    letter-spacing: -0.05em;
+  }
+
+  .brand-mark {
+    flex: none;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .button-primary,
+  .hero-actions .button-link {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    min-height: 320px !important;
+  }
+
+  .visual-panel {
+    min-height: 310px !important;
+  }
+
+  .value-strip {
+    font-size: 10px;
+  }
+
+  .step-grid,
+  .overview-grid,
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .form-grid label.wide {
+    grid-column: auto;
+  }
+
+  .step-card {
+    min-height: 220px;
+  }
+
+  .overview-card {
+    min-height: 0;
+  }
+
+  .record-card {
+    flex-direction: column;
+  }
+
+  .row-actions {
+    justify-content: flex-end;
+  }
+
+  .scan-panel {
+    padding: 18px;
+  }
+
+  .scan-form > div {
+    flex-direction: column;
+  }
+
+  .scan-results {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .signin-page {
+    padding: 18px 5vw;
+  }
+
+  .signin-card {
+    margin-top: 7vh;
+    padding: clamp(20px, 7vw, 32px);
+  }
+}
