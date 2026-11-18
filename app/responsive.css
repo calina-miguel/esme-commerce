@@ -69,6 +69,12 @@ button {
 }
 
 @media (max-width: 760px) {
+  #how-it-works .section-intro,
+  #features .feature-sticky {
+    padding: 18px 16px 20px !important;
+    border-radius: 14px;
+  }
+
   :root {
     --mobile-gutter: clamp(16px, 5vw, 24px);
   }
