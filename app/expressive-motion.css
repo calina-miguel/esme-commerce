@@ -38,7 +38,7 @@
 /* Scroll-linked scenes use transform and opacity so the layout never jumps. */
 .marketing.scroll-motion-ready [data-scroll-motion]{
     opacity:var(--scroll-opacity,1);
-    transform:translate3d(var(--scroll-x,0px),var(--scroll-y,0px),0) scale(var(--scroll-scale,1));
+    transform:translate3d(var(--scroll-x,0px),var(--scroll-y,0px),0) rotate(var(--scroll-rotate,0deg)) scale(var(--scroll-scale,1));
     animation:none;
     will-change:transform,opacity;
 }
@@ -89,5 +89,51 @@ html{scroll-behavior:auto}
     transform:translate3d(0,var(--parallax-y,0px),0);
     will-change:transform;
     pointer-events:none;
+  }
+
+  .marketing.scroll-motion-ready .step-card > *,
+  .marketing.scroll-motion-ready .feature-list > div > *,
+  .marketing.scroll-motion-ready .pricing-card > *,
+  .marketing.scroll-motion-ready .faq details > * {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 550ms ease, transform 650ms cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .marketing.scroll-motion-ready .step-card.motion-visible > *,
+  .marketing.scroll-motion-ready .feature-list > div.motion-visible > *,
+  .marketing.scroll-motion-ready .pricing-card.motion-visible > *,
+  .marketing.scroll-motion-ready .faq details.motion-visible > * {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .marketing.scroll-motion-ready .step-card.motion-visible > :nth-child(2),
+  .marketing.scroll-motion-ready .feature-list > div.motion-visible > :nth-child(2),
+  .marketing.scroll-motion-ready .pricing-card.motion-visible > :nth-child(2),
+  .marketing.scroll-motion-ready .faq details.motion-visible > :nth-child(2) {
+    transition-delay: 70ms;
+  }
+
+  .marketing.scroll-motion-ready .step-card.motion-visible > :nth-child(3),
+  .marketing.scroll-motion-ready .feature-list > div.motion-visible > :nth-child(3),
+  .marketing.scroll-motion-ready .pricing-card.motion-visible > :nth-child(3) {
+    transition-delay: 140ms;
+  }
+
+  .marketing.scroll-motion-ready .step-card.motion-visible > :nth-child(4),
+  .marketing.scroll-motion-ready .pricing-card.motion-visible > :nth-child(n + 4) {
+    transition-delay: 210ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketing.scroll-motion-ready .step-card > *,
+  .marketing.scroll-motion-ready .feature-list > div > *,
+  .marketing.scroll-motion-ready .pricing-card > *,
+  .marketing.scroll-motion-ready .faq details > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
