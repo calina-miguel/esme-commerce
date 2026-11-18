@@ -35,18 +35,90 @@
   .step-card,.overview-card,.record-card,.pricing-card,.button-primary,.button-small,.button-secondary,.nav-item{transition:none!important}
 }
 
-/* Scroll-linked scenes use transform and opacity so the layout never jumps. */
-.marketing.scroll-motion-ready [data-scroll-motion]{
-    opacity:var(--scroll-opacity,1);
-    transform:translate3d(var(--scroll-x,0px),var(--scroll-y,0px),0) rotate(var(--scroll-rotate,0deg)) scale(var(--scroll-scale,1));
-    animation:none;
-    will-change:transform,opacity;
+/* Scroll-linked reveals use composited transforms; the native view timeline handles hero parallax. */
+@keyframes esme-hero-parallax {
+  from { transform: translate3d(0, -10%, 0) scale(1.12); }
+  to { transform: translate3d(0, 22%, 0) scale(1.12); }
 }
-.marketing.scroll-motion-ready .step-card:hover{
-    transform:translate3d(var(--scroll-x,0px),calc(var(--scroll-y,0px) - 12px),0) rotate(-1deg) scale(calc(var(--scroll-scale,1) * 1.025));
+
+@keyframes esme-orb-parallax-forward {
+  from { transform: translate3d(0, -12%, 0); }
+  to { transform: translate3d(0, 18%, 0); }
 }
-.marketing.scroll-motion-ready .pricing-card:hover{
-    transform:translate3d(var(--scroll-x,0px),calc(var(--scroll-y,0px) - 8px),0) scale(calc(var(--scroll-scale,1) * 1.015));
+
+@keyframes esme-orb-parallax-reverse {
+  from { transform: translate3d(0, 14%, 0); }
+  to { transform: translate3d(0, -18%, 0); }
+}
+
+@keyframes esme-feature-progress {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes esme-feature-line-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marketing.scroll-motion-ready [data-scroll-motion] {
+    --reveal-x: 0px;
+    opacity: 0;
+    transform: translate3d(var(--reveal-x), 22px, 0) scale(0.985);
+    transition: opacity 650ms ease, transform 800ms cubic-bezier(.2, .8, .2, 1);
+    will-change: transform, opacity;
+  }
+
+  .marketing.scroll-motion-ready [data-scroll-motion="left"] { --reveal-x: -28px; }
+  .marketing.scroll-motion-ready [data-scroll-motion="right"] { --reveal-x: 28px; }
+
+  .marketing.scroll-motion-ready [data-scroll-motion].motion-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  .marketing.scroll-motion-ready .step-card { animation: none; }
+
+  .marketing.scroll-motion-ready .step-card:hover {
+    transform: translate3d(0, -12px, 0) rotate(-1deg) scale(1.025);
+  }
+
+  .marketing.scroll-motion-ready .pricing-card:hover {
+    transform: translate3d(0, -8px, 0) scale(1.015);
+  }
+
+  @supports (animation-timeline: view()) {
+    .marketing.scroll-motion-ready .hero-visual::before {
+      animation: esme-hero-parallax linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    .marketing.scroll-motion-ready .orb-one {
+      animation: esme-orb-parallax-forward linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    .marketing.scroll-motion-ready .orb-two {
+      animation: esme-orb-parallax-reverse linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    .marketing.scroll-motion-ready .feature-section::before {
+      animation: esme-feature-progress linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    .marketing.scroll-motion-ready .feature-progress span {
+      animation: esme-feature-line-progress linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
 }
 @media (prefers-reduced-motion:no-preference){
   .feature-section{position:relative;isolation:isolate;overflow:clip}
