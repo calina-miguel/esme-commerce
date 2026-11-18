@@ -69,6 +69,41 @@ button {
 }
 
 @media (max-width: 760px) {
+  :root {
+    --mobile-gutter: clamp(16px, 5vw, 24px);
+  }
+
+  .site-header,
+  .hero,
+  .section-wrap,
+  .signin-page {
+    padding-inline: var(--mobile-gutter) !important;
+  }
+
+  .value-strip,
+  .footer-inner {
+    padding-inline: var(--mobile-gutter) !important;
+  }
+
+  .section-wrap > *,
+  .section-wrap .feature-layout > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .section-intro .eyebrow.accent,
+  .feature-sticky .eyebrow.accent,
+  .pricing-section .eyebrow.accent,
+  .faq .eyebrow.accent {
+    display: inline-block;
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.45;
+    color: var(--accent-emerald) !important;
+    -webkit-text-fill-color: var(--accent-emerald) !important;
+    -webkit-background-clip: border-box !important;
+  }
+
   .site-header {
     display: flex !important;
     flex-wrap: wrap;
