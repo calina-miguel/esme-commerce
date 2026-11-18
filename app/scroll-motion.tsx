@@ -61,16 +61,16 @@ export default function ScrollMotion() {
         const isHero = item.classList.contains("hero-visual");
         const isStep = item.classList.contains("step-card");
         const distance = mobile
-          ? isHero ? Math.min(width * 0.82, 340) : isStep ? Math.min(width * 0.62, 260) : 130
-          : isHero ? Math.min(width * 0.38, 430) : isStep ? (tablet ? 240 : 290) : (tablet ? 175 : 240);
+          ? isHero ? Math.min(width * 0.2, 88) : isStep ? Math.min(width * 0.15, 64) : 48
+          : isHero ? Math.min(width * 0.24, 340) : isStep ? (tablet ? 130 : 165) : (tablet ? 95 : 120);
 
         return {
           item,
           x: (1 - eased) * distance * direction,
           y: (1 - eased) * (direction ? (mobile ? 28 : tablet ? 52 : 75) : distance),
           opacity: Math.max(0.1, eased),
-          scale: (isHero ? 0.72 : isStep ? 0.8 : 0.85) + eased * (isHero ? 0.28 : isStep ? 0.2 : 0.15),
-          rotation: (1 - eased) * (isHero ? 8 : isStep ? 4 : 2) * direction,
+          scale: (isHero ? 0.9 : isStep ? 0.94 : 0.96) + eased * (isHero ? 0.1 : isStep ? 0.06 : 0.04),
+          rotation: (1 - eased) * (isHero ? 3 : isStep ? 2 : 1.25) * direction,
         };
       });
 
