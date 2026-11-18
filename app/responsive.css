@@ -1,7 +1,7 @@
 /* Shared layout guardrails and responsive adjustments for the public site and seller workspace. */
 .eyebrow.accent {
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
+  color: var(--accent-emerald) !important;
+  -webkit-text-fill-color: var(--accent-emerald) !important;
   -webkit-background-clip: border-box !important;
 }
 html,
@@ -110,8 +110,8 @@ button {
     max-width: 100%;
     white-space: normal;
     line-height: 1.45;
-    color: #fff !important;
-    -webkit-text-fill-color: #fff !important;
+    color: var(--accent-emerald) !important;
+    -webkit-text-fill-color: var(--accent-emerald) !important;
     -webkit-background-clip: border-box !important;
   }
 

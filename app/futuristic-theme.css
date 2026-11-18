@@ -193,6 +193,10 @@ h1, h2, h3, h4 {
   font-weight: 600 !important;
 }
 
+[data-theme="light"] .brand-light {
+  color: #6366f1 !important;
+}
+
 .site-header nav {
   display: flex !important;
   gap: 32px !important;
@@ -511,6 +515,25 @@ h1, h2, h3, h4 {
   line-height: 1.65 !important;
 }
 
+.section-intro p,
+.feature-sticky p,
+.pricing-section > div > p {
+  color: var(--text-secondary) !important;
+}
+
+.pricing-section h2 em {
+  font-style: normal !important;
+  background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+[data-theme="light"] .pricing-section h2 em {
+  background: linear-gradient(135deg, #059669 0%, #0284c7 50%, #6366f1 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
 .hero-note {
   color: var(--text-muted) !important;
 }
@@ -761,6 +784,18 @@ h1, h2, h3, h4 {
 }
 
 .pricing-card li:before {
+  color: var(--accent-emerald) !important;
+}
+
+.pricing-card ul {
+  color: var(--text-secondary) !important;
+}
+
+.pricing-card small {
+  color: var(--text-muted) !important;
+}
+
+.pricing-card > span {
   color: var(--accent-emerald) !important;
 }
 
