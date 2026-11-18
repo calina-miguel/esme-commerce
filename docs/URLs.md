@@ -1,9 +1,9 @@
-# Eshme-Commerce URLs
+# Esme-Commerce URLs
 
-- Source repository: https://github.com/calina-miguel/eshme-commerce
+- Source repository: https://github.com/calina-miguel/esme-commerce
 - Local development: http://127.0.0.1:5173/
-- Public app: https://eshme-commerce.netlify.app/
-- Sign in: https://eshme-commerce.netlify.app/login
-- Workspace: https://eshme-commerce.netlify.app/workspace
+- Public app: https://esme-commerce.vercel.app/
+- Sign in: https://esme-commerce.vercel.app/login
+- Workspace: https://esme-commerce.vercel.app/workspace
 
-This is the permanent public hostname for future releases. Update the existing deployment and verify the public home page and workspace route before sharing changes.
+This is the canonical public deployment hosted on Vercel. Verify the public home page and workspace routes before sharing changes.

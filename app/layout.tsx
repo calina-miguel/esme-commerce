@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./expressive-motion.css";
 import "./mobile-story.css";
+import "./futuristic-theme.css";
 import AuthCallback from "./auth-callback";
+import SmoothScroll from "./smooth-scroll";
 
 export const metadata: Metadata = {
-  title: "Eshme-Commerce",
+  title: "Esme-Commerce",
   description: "A seller workspace for research, sourcing and commerce operations.",
   icons: {
     icon: "/favicon.svg",
@@ -20,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased"><AuthCallback />{children}</body>
+      <body className="antialiased"><SmoothScroll /><AuthCallback />{children}</body>
     </html>
   );
 }
