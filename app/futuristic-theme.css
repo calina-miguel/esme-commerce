@@ -340,7 +340,8 @@ h1, h2, h3, h4 {
 
 /* Eyebrows & Accents */
 .eyebrow, .panel-kicker, .side-caption, .section-intro .eyebrow {
-  color: var(--accent-emerald) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: 0.14em !important;
@@ -357,6 +358,7 @@ h1, h2, h3, h4 {
 [data-theme="light"] .panel-kicker,
 [data-theme="light"] .section-intro .eyebrow {
   color: #047857 !important;
+  -webkit-text-fill-color: #047857 !important;
   background: rgba(5, 150, 105, 0.1) !important;
   border: 1px solid rgba(5, 150, 105, 0.25) !important;
   box-shadow: 0 2px 8px rgba(5, 150, 105, 0.08) !important;

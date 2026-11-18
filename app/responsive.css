@@ -1,8 +1,13 @@
 /* Shared layout guardrails and responsive adjustments for the public site and seller workspace. */
 .eyebrow.accent {
-  color: var(--accent-emerald) !important;
-  -webkit-text-fill-color: var(--accent-emerald) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
+}
+
+[data-theme="light"] .eyebrow.accent {
+  color: #047857 !important;
+  -webkit-text-fill-color: #047857 !important;
 }
 html,
 body {
@@ -110,9 +115,17 @@ button {
     max-width: 100%;
     white-space: normal;
     line-height: 1.45;
-    color: var(--accent-emerald) !important;
-    -webkit-text-fill-color: var(--accent-emerald) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
     -webkit-background-clip: border-box !important;
+  }
+
+  [data-theme="light"] .section-intro .eyebrow.accent,
+  [data-theme="light"] .feature-sticky .eyebrow.accent,
+  [data-theme="light"] .pricing-section .eyebrow.accent,
+  [data-theme="light"] .faq .eyebrow.accent {
+    color: #047857 !important;
+    -webkit-text-fill-color: #047857 !important;
   }
 
   .site-header {
