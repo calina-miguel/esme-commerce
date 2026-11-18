@@ -2,15 +2,43 @@
 
 import { useEffect } from "react";
 
-const clamp = (value: number) => Math.min(1, Math.max(0, value));
+/** Walk offsetParent chain to get stable document-relative top — avoids layout thrash on every frame. */
+function getDocumentTop(el: HTMLElement): number {
+  let top = 0;
+  let cur: HTMLElement | null = el;
+  while (cur && cur !== document.body) {
+    top += cur.offsetTop;
+    cur = cur.offsetParent as HTMLElement | null;
+  }
+  return top;
+}
+
+const clamp = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min, v));
+
+type Measurement = {
+  el: HTMLElement;
+  top: number;
+  height: number;
+  dir: number; // -1 left | 1 right | 0 none
+  isHero: boolean;
+};
+
+type LenisInstance = {
+  scroll: number;
+  on(event: string, cb: () => void): void;
+  off(event: string, cb: () => void): void;
+};
 
 export default function ScrollMotion() {
   useEffect(() => {
     const root = document.querySelector<HTMLElement>(".marketing");
     if (!root) return;
 
-    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-scroll-motion]"));
-    const reveals = Array.from(
+    // --- Collect targets ---
+    const motionEls = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-scroll-motion]")
+    );
+    const revealEls = Array.from(
       root.querySelectorAll<HTMLElement>(
         ".hero-copy h1, .section-intro h2, .feature-sticky h2, .pricing-section h2, .faq h2, .hero-copy > p, .section-intro > p"
       )
@@ -20,99 +48,157 @@ export default function ScrollMotion() {
     const orbTwo = root.querySelector<HTMLElement>(".orb-two");
     const floatCard = root.querySelector<HTMLElement>(".float-card");
 
+    // --- Pre-measured positions (avoid getBoundingClientRect each frame) ---
+    let measurements: Measurement[] = [];
+
+    function measure() {
+      measurements = motionEls.map((el) => ({
+        el,
+        top: getDocumentTop(el),
+        height: el.offsetHeight,
+        dir:
+          el.dataset.scrollMotion === "left"
+            ? -1
+            : el.dataset.scrollMotion === "right"
+            ? 1
+            : 0,
+        isHero: el.classList.contains("hero-visual"),
+      }));
+    }
+
+    // --- Per-frame update ---
+    let frame = 0;
+
+    function update() {
+      frame = 0;
+      const vh = window.innerHeight;
+      // Prefer Lenis's smooth virtual scroll position so motion is inertia-coupled
+      const lenis = (window as unknown as { __lenis?: LenisInstance }).__lenis;
+      const scrollY = lenis ? lenis.scroll : window.scrollY;
+
+      for (const { el, top, height, dir, isHero } of measurements) {
+        // progress: 0 = element just entering bottom of viewport, 1 = fully scrolled past top
+        const progress = clamp((scrollY + vh - top) / (vh + height));
+
+        // Enter zone: 0 → 0.2 (slide in, fade in, scale up)
+        const enter = clamp(progress / 0.2);
+        // Exit zone: 0.78 → 1 (drift up, fade out, slight scale down)
+        const exit = clamp((progress - 0.78) / 0.22);
+
+        // Y: starts below, rests at 0, drifts upward on exit
+        const startY = isHero ? 60 : 44;
+        const endY = isHero ? -50 : -36;
+        const y =
+          progress < 0.2
+            ? startY * (1 - enter)
+            : progress > 0.78
+            ? endY * exit
+            : 0;
+
+        // X: gentle horizontal nudge on enter only (no exit X)
+        const startX = Math.abs(dir) * (isHero ? 30 : 22);
+        const x = dir * startX * (1 - enter);
+
+        // Opacity: 0 → 1 on enter, 1 → 0 on exit
+        const opacity =
+          progress < 0.2 ? enter : progress > 0.78 ? 1 - exit : 1;
+
+        // Scale: 0.965 → 1 on enter, slight shrink on exit
+        const scale = 0.965 + 0.035 * enter - 0.015 * exit;
+
+        el.style.setProperty("--scroll-x", `${x}px`);
+        el.style.setProperty("--scroll-y", `${y}px`);
+        el.style.setProperty("--scroll-opacity", String(Math.max(0, opacity)));
+        el.style.setProperty("--scroll-scale", String(Math.max(0.9, scale)));
+      }
+
+      // Orb parallax — driven by native scroll for smooth backdrop motion
+      if (heroVisual) {
+        const heroSection = heroVisual.closest("section");
+        const dist = heroSection ? -heroSection.getBoundingClientRect().top : 0;
+        heroVisual.style.setProperty("--parallax-y", `${dist * 0.1}px`);
+        if (orbOne) orbOne.style.transform = `translate3d(0,${dist * 0.22}px,0)`;
+        if (orbTwo) orbTwo.style.transform = `translate3d(0,${-dist * 0.16}px,0)`;
+        if (floatCard) floatCard.style.transform = `translate3d(0,${-dist * 0.1}px,0)`;
+      }
+
+      // Feature section scroll-linked progress bar
+      const feature = root!.querySelector<HTMLElement>(".feature-section");
+      if (feature) {
+        const b = feature.getBoundingClientRect();
+        feature.style.setProperty(
+          "--section-progress",
+          String(clamp(-b.top / Math.max(1, b.height - vh)))
+        );
+      }
+    }
+
+    function schedule() {
+      if (!frame) frame = requestAnimationFrame(update);
+    }
+
+    // --- Intersection observer for text reveals ---
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-          entry.target.classList.add(entry.target.classList.contains("reveal") ? "is-visible" : "motion-visible");
-          observer.unobserve(entry.target);
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
           }
         }
       },
       { threshold: 0.1 }
     );
-
-    for (const heading of reveals) {
-      heading.classList.add("reveal");
-      observer.observe(heading);
+    for (const el of revealEls) {
+      el.classList.add("reveal");
+      observer.observe(el);
     }
-    for (const item of items) observer.observe(item);
 
-    let frame = 0;
-
-    const feature = root.querySelector<HTMLElement>(".feature-section");
-    const heroSection = heroVisual?.closest("section");
-
-    const update = () => {
-      frame = 0;
-      const height = window.innerHeight;
-      const width = window.innerWidth;
-      const mobile = width < 650;
-      const tablet = width < 1024;
-      const heroDistance = heroSection ? -heroSection.getBoundingClientRect().top : 0;
-      const featureBounds = feature?.getBoundingClientRect();
-
-      const itemMotion = items.map((item) => {
-        const rect = item.getBoundingClientRect();
-        const enter = clamp((height * 0.95 - rect.top) / (height * 0.5));
-        const leave = clamp((rect.bottom - height * 0.05) / (height * 0.35));
-        const eased = 1 - Math.pow(1 - Math.min(enter, leave), 3);
-        const direction = item.dataset.scrollMotion === "left" ? -1 : item.dataset.scrollMotion === "right" ? 1 : 0;
-        const isHero = item.classList.contains("hero-visual");
-        const isStep = item.classList.contains("step-card");
-        const distance = mobile
-          ? isHero ? Math.min(width * 0.2, 88) : isStep ? Math.min(width * 0.15, 64) : 48
-          : isHero ? Math.min(width * 0.24, 340) : isStep ? (tablet ? 130 : 165) : (tablet ? 95 : 120);
-
-        return {
-          item,
-          x: (1 - eased) * distance * direction,
-          y: (1 - eased) * (direction ? (mobile ? 28 : tablet ? 52 : 75) : distance),
-          opacity: Math.max(0.1, eased),
-          scale: (isHero ? 0.9 : isStep ? 0.94 : 0.96) + eased * (isHero ? 0.1 : isStep ? 0.06 : 0.04),
-          rotation: (1 - eased) * (isHero ? 3 : isStep ? 2 : 1.25) * direction,
-        };
-      });
-
-      // Read every layout measurement before writing transforms to avoid frame-time layout thrashing.
-      if (heroVisual) heroVisual.style.setProperty("--parallax-y", `${heroDistance * 0.18}px`);
-      if (orbOne) orbOne.style.transform = `translate3d(0, ${heroDistance * 0.28}px, 0)`;
-      if (orbTwo) orbTwo.style.transform = `translate3d(0, ${-heroDistance * 0.22}px, 0)`;
-      if (floatCard) floatCard.style.transform = `translate3d(0, ${-heroDistance * 0.14}px, 0)`;
-
-      for (const motion of itemMotion) {
-        motion.item.style.setProperty("--scroll-x", `${motion.x}px`);
-        motion.item.style.setProperty("--scroll-y", `${motion.y}px`);
-        motion.item.style.setProperty("--scroll-opacity", `${motion.opacity}`);
-        motion.item.style.setProperty("--scroll-scale", `${motion.scale}`);
-        motion.item.style.setProperty("--scroll-rotate", `${motion.rotation}deg`);
+    // --- Hook into Lenis scroll event (prefers Lenis, falls back to native) ---
+    function tryHookLenis(): boolean {
+      const lenis = (window as unknown as { __lenis?: LenisInstance }).__lenis;
+      if (lenis) {
+        lenis.on("scroll", schedule);
+        return true;
       }
+      return false;
+    }
 
-      if (feature && featureBounds) {
-        const total = Math.max(1, featureBounds.height - height);
-        feature.style.setProperty("--section-progress", `${clamp(-featureBounds.top / total)}`);
-      }
-    };
+    let lenisHooked = tryHookLenis();
+    // Retry once after a short delay (Lenis initialises in another useEffect)
+    const retryTimer = !lenisHooked
+      ? setTimeout(() => { lenisHooked = tryHookLenis(); }, 400)
+      : null;
 
-    const schedule = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-
-    root.classList.add("scroll-motion-ready");
-    update();
-
+    // Native scroll is always registered as a secondary driver
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    window.addEventListener("resize", () => { measure(); schedule(); }, { passive: true });
+    window.addEventListener("load", () => { measure(); schedule(); }, { once: true });
+
+    // ResizeObserver re-measures when any target changes size
+    let ro: ResizeObserver | null = null;
+    if ("ResizeObserver" in window) {
+      ro = new ResizeObserver(() => { measure(); schedule(); });
+      ro.observe(document.body);
+    }
+
+    // Activate and do first paint
+    root.classList.add("scroll-motion-ready");
+    measure();
+    // Observe targets after measure
+    if (ro) for (const { el } of measurements) ro.observe(el);
+    update();
 
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      if (frame) window.cancelAnimationFrame(frame);
+      if (retryTimer) clearTimeout(retryTimer);
+      const lenis = (window as unknown as { __lenis?: LenisInstance }).__lenis;
+      if (lenis) lenis.off("scroll", schedule);
       observer.disconnect();
-      for (const heading of reveals) {
-        heading.classList.remove("reveal", "is-visible");
-      }
-      for (const item of items) item.classList.remove("motion-visible");
+      ro?.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+      for (const el of revealEls) el.classList.remove("reveal", "is-visible");
       root.classList.remove("scroll-motion-ready");
     };
   }, []);

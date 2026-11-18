@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ScrollMotion from "./scroll-motion";
+import SmoothScroll from "./smooth-scroll";
 import ThemeToggle from "./theme-toggle";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ const steps = [
 
 export default function Home() {
   const signIn = process.env.NODE_ENV === "development" && process.env.NETLIFY !== "true" ? "/workspace" : "/login";
-  return <main className="marketing"><ScrollMotion />
+  return <main className="marketing"><SmoothScroll /><ScrollMotion />
     <header className="site-header"><a className="brand" href="/"><span className="brand-mark">E</span><span>Esme<span className="brand-light">-Commerce</span></span></a><nav aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#features">Features</a><a href="#pricing">Pricing</a></nav><div className="header-actions"><ThemeToggle /><a className="button-small" href={signIn} target="_top">Open workspace ↗</a></div></header>
     <section className="hero"><div className="hero-copy"><span className="eyebrow accent">THE SELLER OPERATING DESK</span><h1><span className="hero-lead">Get your ecommerce operation</span> <em>moving.</em></h1><p>Go from an idea to a selling plan with market research, supplier terms, products and customer follow-up in one clear workspace.</p><div className="hero-actions"><a className="button-primary" href={signIn} target="_top">Start free for 30 days <span>↗</span></a><a className="button-link" href="#how-it-works">See how it works <span>↓</span></a></div><div className="hero-note">No card required. Access remains free while subscription billing is being prepared.</div></div><div className="hero-visual" data-scroll-motion="right" aria-hidden="true"><div className="orb orb-one"/><div className="orb orb-two"/><div className="visual-panel"><div className="panel-top"><span className="mini-logo">E</span><span>Seller workspace</span><span className="panel-dots">•••</span></div><div className="panel-body"><span className="panel-kicker">YOUR NEXT MOVE</span><h2>From insight<br/>to income.</h2><div className="progress-row"><span>Niche research</span><b>01</b></div><div className="progress-row"><span>Supplier terms</span><b>02</b></div><div className="progress-row"><span>Products & channels</span><b>03</b></div><div className="progress-row"><span>Campaigns & orders</span><b>04</b></div></div></div><div className="float-card"><span className="float-icon">↗</span><span>One place for<br/><strong>every next step</strong></span></div></div></section>
     <div className="value-strip"><span>Research with evidence</span><span>Compare supplier commitments</span><span>Prepare channel feeds</span><span>Keep buyer conversations moving</span></div>
