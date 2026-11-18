@@ -12,8 +12,11 @@ export default function SmoothScroll() {
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.25,
+      anchors: true,
+      stopInertiaOnNavigate: true,
+      syncTouch: true,
+      touchMultiplier: 1.1,
+      respectReducedMotion: true,
       autoResize: true,
     });
 
