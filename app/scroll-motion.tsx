@@ -24,8 +24,8 @@ export default function ScrollMotion() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+          entry.target.classList.add(entry.target.classList.contains("reveal") ? "is-visible" : "motion-visible");
+          observer.unobserve(entry.target);
           }
         }
       },
@@ -36,60 +36,61 @@ export default function ScrollMotion() {
       heading.classList.add("reveal");
       observer.observe(heading);
     }
+    for (const item of items) observer.observe(item);
 
     let frame = 0;
+
+    const feature = root.querySelector<HTMLElement>(".feature-section");
+    const heroSection = heroVisual?.closest("section");
 
     const update = () => {
       frame = 0;
       const height = window.innerHeight;
-      const scrollY = window.scrollY;
-      const mobile = window.innerWidth < 650;
-      const tablet = window.innerWidth < 1024;
+      const width = window.innerWidth;
+      const mobile = width < 650;
+      const tablet = width < 1024;
+      const heroDistance = heroSection ? -heroSection.getBoundingClientRect().top : 0;
+      const featureBounds = feature?.getBoundingClientRect();
 
-      // Parallax effect on hero visual elements
-      if (heroVisual) {
-        const hero = heroVisual.closest("section");
-        const distance = hero ? -hero.getBoundingClientRect().top : 0;
-        heroVisual.style.setProperty("--parallax-y", `${distance * 0.18}px`);
-
-        if (orbOne) {
-          orbOne.style.transform = `translate3d(0, ${distance * 0.28}px, 0)`;
-        }
-        if (orbTwo) {
-          orbTwo.style.transform = `translate3d(0, ${-distance * 0.22}px, 0)`;
-        }
-        if (floatCard) {
-          floatCard.style.transform = `translate3d(0, ${-distance * 0.14}px, 0)`;
-        }
-      }
-
-      // Parallax & reveal on scroll-motion items
-      for (const item of items) {
+      const itemMotion = items.map((item) => {
         const rect = item.getBoundingClientRect();
         const enter = clamp((height * 0.95 - rect.top) / (height * 0.5));
         const leave = clamp((rect.bottom - height * 0.05) / (height * 0.35));
-        const progress = Math.min(enter, leave);
-        const eased = 1 - Math.pow(1 - progress, 3);
+        const eased = 1 - Math.pow(1 - Math.min(enter, leave), 3);
         const direction = item.dataset.scrollMotion === "left" ? -1 : item.dataset.scrollMotion === "right" ? 1 : 0;
         const isHero = item.classList.contains("hero-visual");
         const isStep = item.classList.contains("step-card");
         const distance = mobile
-          ? isHero ? Math.min(window.innerWidth * 0.82, 340) : isStep ? Math.min(window.innerWidth * 0.62, 260) : 130
-          : isHero ? Math.min(window.innerWidth * 0.38, 430) : isStep ? (tablet ? 240 : 290) : (tablet ? 175 : 240);
+          ? isHero ? Math.min(width * 0.82, 340) : isStep ? Math.min(width * 0.62, 260) : 130
+          : isHero ? Math.min(width * 0.38, 430) : isStep ? (tablet ? 240 : 290) : (tablet ? 175 : 240);
 
-        item.style.setProperty("--scroll-x", `${(1 - eased) * distance * direction}px`);
-        item.style.setProperty("--scroll-y", `${(1 - eased) * (direction ? (mobile ? 28 : tablet ? 52 : 75) : distance)}px`);
-        item.style.setProperty("--scroll-opacity", `${Math.max(0.1, eased)}`);
-        item.style.setProperty("--scroll-scale", `${(isHero ? 0.72 : isStep ? 0.8 : 0.85) + eased * (isHero ? 0.28 : isStep ? 0.2 : 0.15)}`);
-        item.style.setProperty("--scroll-rotate", `${(1 - eased) * (isHero ? 8 : isStep ? 4 : 2) * direction}deg`);
+        return {
+          item,
+          x: (1 - eased) * distance * direction,
+          y: (1 - eased) * (direction ? (mobile ? 28 : tablet ? 52 : 75) : distance),
+          opacity: Math.max(0.1, eased),
+          scale: (isHero ? 0.72 : isStep ? 0.8 : 0.85) + eased * (isHero ? 0.28 : isStep ? 0.2 : 0.15),
+          rotation: (1 - eased) * (isHero ? 8 : isStep ? 4 : 2) * direction,
+        };
+      });
+
+      // Read every layout measurement before writing transforms to avoid frame-time layout thrashing.
+      if (heroVisual) heroVisual.style.setProperty("--parallax-y", `${heroDistance * 0.18}px`);
+      if (orbOne) orbOne.style.transform = `translate3d(0, ${heroDistance * 0.28}px, 0)`;
+      if (orbTwo) orbTwo.style.transform = `translate3d(0, ${-heroDistance * 0.22}px, 0)`;
+      if (floatCard) floatCard.style.transform = `translate3d(0, ${-heroDistance * 0.14}px, 0)`;
+
+      for (const motion of itemMotion) {
+        motion.item.style.setProperty("--scroll-x", `${motion.x}px`);
+        motion.item.style.setProperty("--scroll-y", `${motion.y}px`);
+        motion.item.style.setProperty("--scroll-opacity", `${motion.opacity}`);
+        motion.item.style.setProperty("--scroll-scale", `${motion.scale}`);
+        motion.item.style.setProperty("--scroll-rotate", `${motion.rotation}deg`);
       }
 
-      // Section progress bar for feature sticky
-      const feature = root.querySelector<HTMLElement>(".feature-section");
-      if (feature) {
-        const bounds = feature.getBoundingClientRect();
-        const total = Math.max(1, bounds.height - height);
-        feature.style.setProperty("--section-progress", `${clamp(-bounds.top / total)}`);
+      if (feature && featureBounds) {
+        const total = Math.max(1, featureBounds.height - height);
+        feature.style.setProperty("--section-progress", `${clamp(-featureBounds.top / total)}`);
       }
     };
 
@@ -111,6 +112,7 @@ export default function ScrollMotion() {
       for (const heading of reveals) {
         heading.classList.remove("reveal", "is-visible");
       }
+      for (const item of items) item.classList.remove("motion-visible");
       root.classList.remove("scroll-motion-ready");
     };
   }, []);

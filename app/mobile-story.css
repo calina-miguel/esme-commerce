@@ -6,7 +6,7 @@
 
 .marketing.scroll-motion-ready [data-scroll-motion] {
   transform: translate3d(var(--scroll-x, 0px), var(--scroll-y, 0px), 0)
-    scale(var(--scroll-scale, 1));
+    rotate(var(--scroll-rotate, 0deg)) scale(var(--scroll-scale, 1));
 }
 
 @media (min-width: 651px) and (max-width: 1024px) {
