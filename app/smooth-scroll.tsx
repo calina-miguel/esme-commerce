@@ -5,19 +5,11 @@ import Lenis from "lenis";
 
 export default function SmoothScroll() {
   useEffect(() => {
-    // Initialize Lenis with refined Framer-style exponential inertia
+    // Exact Lenis configuration matching sunstead-solar (calina-miguel.github.io/sunstead-solar)
     const lenis = new Lenis({
-      duration: 1.35,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential deceleration curve matching Framer
-      orientation: "vertical",
-      gestureOrientation: "vertical",
+      lerp: 0.1,
       smoothWheel: true,
-      anchors: true,
-      stopInertiaOnNavigate: true,
-      syncTouch: true,
-      touchMultiplier: 1.1,
-      respectReducedMotion: true,
-      autoResize: true,
+      syncTouch: false,
     });
 
     let animationFrameId: number;
@@ -27,7 +19,7 @@ export default function SmoothScroll() {
     }
     animationFrameId = requestAnimationFrame(raf);
 
-    // Provide global access for custom parallax hooks if needed
+    // Provide global access for custom parallax hooks or link handlers
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
     return () => {

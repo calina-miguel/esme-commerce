@@ -67,7 +67,14 @@
   .feature-section:before,.feature-progress{display:none}
 }
 
-/* Native scrolling with a lightweight reveal and decorative parallax layer. */
+/* Lenis smooth scrolling support matching sunstead-solar */
+html.lenis, html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto !important; }
+html.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+html.lenis.lenis-stopped { overflow: hidden; }
+html.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* Native scrolling fallback with a lightweight reveal and decorative parallax layer. */
 html{scroll-behavior:auto}
 @media (prefers-reduced-motion:no-preference){
   .marketing.scroll-motion-ready .reveal{
