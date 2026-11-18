@@ -276,6 +276,64 @@ h1, h2, h3, h4 {
   transform: rotate(18deg) !important;
 }
 
+/* Responsive Header for Mobile Screens (e.g. Galaxy A15 / phones <= 680px) */
+@media (max-width: 680px) {
+  .site-header {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 14px 16px !important;
+    gap: 12px 0 !important;
+  }
+
+  .site-header .brand {
+    order: 1 !important;
+    font-size: 18px !important;
+    gap: 8px !important;
+  }
+
+  .site-header .brand-mark {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 15px !important;
+  }
+
+  .site-header .header-actions {
+    order: 2 !important;
+    margin-left: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .site-header .theme-toggle-btn {
+    width: 34px !important;
+    height: 34px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .site-header .button-small {
+    padding: 7px 13px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .site-header nav {
+    order: 3 !important;
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 16px !important;
+    margin-top: 2px !important;
+    padding: 6px 14px !important;
+  }
+
+  .site-header nav a {
+    font-size: 12px !important;
+    padding: 2px 4px !important;
+  }
+}
+
 /* Eyebrows & Accents */
 .eyebrow, .panel-kicker, .side-caption, .section-intro .eyebrow {
   color: var(--accent-emerald) !important;
