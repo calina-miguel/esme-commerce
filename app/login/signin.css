@@ -1,6 +1,96 @@
-.signin-page{min-height:100vh;padding:25px 5vw;background:radial-gradient(circle at 80% 20%,#dcebcf,transparent 36%),#f9faf5}
-.signin-card{width:min(440px,100%);margin:10vh auto 0;padding:36px;border:1px solid #dce7d8;border-radius:20px;background:#fff;box-shadow:0 28px 70px #214b2b19}
-.signin-card h1{font-size:clamp(38px,5vw,54px);margin:12px 0}.signin-card>p{color:#58695b;line-height:1.55}
-.signin-card form{display:grid;gap:16px;margin:26px 0 18px}.signin-card label{display:grid;gap:7px;font-size:13px;font-weight:700;color:#536455}
-.signin-card input{width:100%;border:1px solid #cfdccf;border-radius:9px;padding:13px;background:#fff;color:#17221d}
-.signin-card .button-primary{width:100%;justify-content:center;margin-top:6px}.signin-message{font-size:13px;color:#275e45}
+.signin-page {
+  min-height: 100vh;
+  padding: 25px 5vw;
+  background-color: var(--bg-canvas);
+  background-image: radial-gradient(circle at 80% 20%, var(--accent-emerald-soft), transparent 36%);
+}
+
+.signin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.signin-card {
+  width: min(440px, 100%);
+  margin: 10vh auto 0;
+  padding: 36px;
+  border: 1px solid var(--border-glass-light);
+  border-radius: 20px;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(20px);
+}
+
+.signin-card h1 {
+  font-size: clamp(38px, 5vw, 54px);
+  margin: 12px 0;
+  color: var(--text-primary);
+}
+
+.signin-card > p {
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.signin-card form {
+  display: grid;
+  gap: 16px;
+  margin: 26px 0 18px;
+}
+
+.signin-card label {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.signin-card input {
+  width: 100%;
+  border: 1px solid var(--border-glass-light);
+  border-radius: 9px;
+  padding: 13px;
+  background: var(--bg-surface-raised);
+  color: var(--text-primary);
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.signin-card input::placeholder {
+  color: var(--text-muted);
+}
+
+.signin-card input:focus {
+  outline: none;
+  border-color: var(--accent-emerald);
+  box-shadow: 0 0 0 3px var(--accent-emerald-soft);
+}
+
+.signin-card .button-primary {
+  width: 100%;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.signin-message {
+  font-size: 13px;
+  color: var(--accent-emerald);
+}
+
+.text-button {
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.text-button:hover {
+  color: var(--text-primary);
+}

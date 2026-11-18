@@ -1190,3 +1190,58 @@ h1, h2, h3, h4 {
 [role="menuitemcheckbox"] {
   display: none !important;
 }
+
+/* Signin Page & Form Glassmorphism / Theming */
+.signin-page {
+  background-color: var(--bg-canvas) !important;
+}
+
+.signin-card {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-glass-light) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+[data-theme="light"] .signin-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08) !important;
+}
+
+.signin-card h1 {
+  color: var(--text-primary) !important;
+}
+
+.signin-card > p {
+  color: var(--text-secondary) !important;
+}
+
+.signin-card label {
+  color: var(--text-secondary) !important;
+}
+
+.signin-card input {
+  background: var(--bg-surface-raised) !important;
+  border: 1px solid var(--border-glass-light) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .signin-card input {
+  background: #f8fafc !important;
+  border: 1px solid rgba(15, 23, 42, 0.15) !important;
+  color: #0f172a !important;
+}
+
+.signin-card input:focus {
+  border-color: var(--accent-emerald) !important;
+  box-shadow: 0 0 0 3px var(--accent-emerald-soft) !important;
+}
+
+.text-button {
+  color: var(--text-secondary) !important;
+}
+
+.text-button:hover {
+  color: var(--text-primary) !important;
+}
+
